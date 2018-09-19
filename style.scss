@@ -1,0 +1,161 @@
+body{
+  margin: 0;
+}
+
+.product{
+  &__item{
+    position: relative;
+    height: 320px;
+    #image{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      height: 320px;
+      width: 120px;
+    }
+  }
+}
+
+.details{
+  text-align: center;
+  &__name{
+    font-size: 24px;
+  } 
+  &__desc{
+    font-size: 16px;
+    color: rgb(153, 153, 153);
+  }
+  &__price{
+    height: 100px;
+    width: 100px;
+    border-radius: 80px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16px;
+    color:#ed150c;
+    position: relative;
+    &--value{
+      padding-top: 15px;
+      font-size: 40px;
+      font-weight: bold;
+    }
+    &--cur{
+      font-size: 16px;
+      font-weight: bold;
+      position: absolute;
+      top: 20px;
+      left: -10%;
+    }
+  }
+}
+.purchase-btn{
+  position: absolute;
+  bottom: 16px;
+  left:50%;
+  transform: translateX(-50%);
+  width: 90%;
+  background-color: #ff8300;
+  padding: 12px 0;
+  border-radius: 8px;
+  color:#fff;
+  &--text{
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.success{
+  padding-top: 50vh;
+  text-align: center;
+  &__name {
+    font-size: 24px;
+  }
+  &__desc {
+    font-size: 16px;
+    color: rgb(153, 153, 153);
+  }
+  &__img{
+    position: absolute;
+    left: 50%;
+    padding-top: 2.5rem;
+    transform: translateX(-50%);
+  }
+}
+
+.otp{
+  padding-top: 100px;
+  &--input{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 20px;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 2px solid #e6e6e6;
+    font-size: 1rem;
+    text-align: center;
+  }
+  &--btn{
+    margin-top: 20px;
+    text-align: center;
+    background-color: #ff8300;
+    color:#fff;
+    padding: 0.75rem 2rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    border-radius: 8px;
+  }
+}
+
+.auth{
+  &__title{
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 300;
+  }
+  &__ref{
+    font-size: 0.875rem;
+    color:#bbbbbb;
+    text-align: center;
+    display: block;
+    padding-top: 1rem;
+  }
+  &__resend{
+    font-size: 0.875rem;
+    color:#147bd1;
+    text-align: center;
+    display: block;
+    padding-top: 2rem;
+  }
+}
+
+.hide{
+  display: none;
+  transition: 200ms;
+}
+
+.loading{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(187, 187, 187, 0.54);
+  display: none;
+  &.show{
+    display: block;
+    > img{
+      position: relative;
+      top: 30%;
+      left: 50%; 
+      transform: translateX(-50%);
+    }
+  }
+}

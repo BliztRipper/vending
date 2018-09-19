@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Vending</title>
+    <link rel="stylesheet" href="css/style.css"/>
+  </head>
+  <body>
+    <section class="product">
+      <div class="product__bg"></div>
+      <div class="product__item"><img id="image" src="images/placeholder.png" alt="product" width="200"/></div>
+    </section>
+    <section class="details">
+      <div class="details__name" id="saleDesc"> </div>
+      <div class="details__desc" id="saleCode">       </div>
+      <div class="details__price">
+        <div class="details__price--value" id="price">    </div>
+        <div class="details__price--cur" id="currency"> </div>
+      </div>
+      <div class="purchase-btn" id="purchase-btn" onclick="returnPayment()">
+        <div class="purchase-btn--text">ซื้อ </div>
+      </div>
+    </section>
+    <div class="loading" id="load"><img src="images/Spinner-1s-200px.gif" alt=""/></div>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

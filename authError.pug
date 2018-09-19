@@ -1,0 +1,13 @@
+extends _template
+block page
+  -var index = 'autherror'
+block body
+  img.success__img(src="images/error1.png", alt="")  
+  section.success      
+    .success__name ยืนยันตัวตนไม่สำเร็จ
+    .success__desc กรุณาลองอีกครั้ง หรือ ติดต่อ Call Center
+  script.
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    }; 
