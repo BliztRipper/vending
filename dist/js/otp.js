@@ -38,7 +38,7 @@ otp_no = {'mobile_number': mobileNo,"tmn_account" : mobileNo};
 console.log(otp_no)
 
 async function checkotp(){
-  const rawResponse = await fetch(`${url_tmn}/AuthApply/${txid}/${tmnid}`, {
+  const rawResponse = await fetch(`${url_tmn}/AuthApply/${tmnid}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

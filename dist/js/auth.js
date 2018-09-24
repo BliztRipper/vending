@@ -14,22 +14,18 @@ const tmnid = url.searchParams.get("tmnid");
 const mobileNo = url.searchParams.get("mobileno");
 
 (async function getData() {
-  let logc = await console.log(`${url_tmn}/HasToken/${tmnid}`)
-  logc
-
   let tokenCheck = await fetch(`${url_tmn}/HasToken/${tmnid}`).then(r => r.json())
-  if(tokenCheck.description  === 'Token not found'){
+  if(tokenCheck.description  === 'Invalid parameters'){
     sessionStorage.setItem("txid",txid);
     sessionStorage.setItem("tmnid",tmnid);
     sessionStorage.setItem("mobileno",mobileNo);
     window.location.href=`otp.html`
   } else if (tokenCheck.description === 'Transaction is not found or expired'){
-    // window.location.href='error.html'
+    window.location.href='error.html'
   } else{
     console.log('Token is '+ tokenCheck.description)
     console.log(tokenCheck.status_code)
   }
-
 
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())
   if (response.status_code != 200) {
@@ -63,7 +59,7 @@ async function returnPayment() {
   let paymentData = await fetch(`https://v.truemoney.net/Payment/${txid}/${tmnid}`).then(r => r.json()).then( json => json.status_code)
     console.log(paymentData);
     if (paymentData !== 200) {
-      // window.location.href = 'error.html'
+      window.location.href = 'error.html'
     } else {
       let loading = document.getElementById("load");
       loading.classList.add("show")
