@@ -1,4 +1,6 @@
 /*Dev Code*/
+const url_tmn = 'https://api-cinema.truemoney.net'
+const url_vending = 'https://v.truemoney.net'
 const txid = sessionStorage.getItem("txid");
 const tmnid = sessionStorage.getItem("tmnid");
 const mobileNo = sessionStorage.getItem("mobileno");
@@ -19,11 +21,11 @@ var otpInput = document.getElementById('otp-form');
 var authInput = document.getElementById('auth-form');
 
 authInput.addEventListener('keyup', function (e) {
-  var auth = authInput.value  
+  var auth = authInput.value
   auth_no = {'otp_ref': otp_ref,"otp_code" : auth, "agreement_id": "online_merchant", "auth_code": auth_code, "tmn_account" : mobileNo};
   console.log(auth_no)
   if(authInput.value.length != 6){
-      
+
   } else {
       let loading = document.getElementById("load");
       loading.classList.add("show")
@@ -36,19 +38,18 @@ otp_no = {'mobile_number': mobileNo,"tmn_account" : mobileNo};
 console.log(otp_no)
 
 async function checkotp(){
-  const rawResponse = await fetch(`https://v.truemoney.net/AuthApply/${txid}/${tmnid}`, {
+  const rawResponse = await fetch(`${url_tmn}/AuthApply/${txid}`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(otp_no)
   });
-  const otp_data = await rawResponse.json(); 
+  const otp_data = await rawResponse.json();
   console.log(otp_data);
   status = otp_data.status
   auth_code = otp_data.auth_code
-  if (status != 200 ) {
+  if (status != 0 ) {
     otp_ref = ' รหัสยืนยันเกิดข้อผิดพลาด'
   } else {
     otp_ref = otp_data.otp_ref
@@ -58,17 +59,16 @@ async function checkotp(){
 checkotp();
 
 async function checkauth(){
-  const rawResponse = await fetch(`https://v.truemoney.net/AuthVerify/${txid}/${tmnid}`, {
+  const rawResponse = await fetch(`${url_tmn}/AuthVerify/${txid}`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(auth_no)
   });
-  const auth_data = await rawResponse.json(); 
+  const auth_data = await rawResponse.json();
   console.log(auth_data);
-  if(status != 200) {
+  if(status != 0) {
     window.location.href='authError.html'
   } else {
     console.log('success');
