@@ -26,7 +26,6 @@ const mobileNo = url.searchParams.get("mobileno");
     console.log('Token is '+ tokenCheck.description)
     console.log(tokenCheck.status_code)
   }
-
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())
   if (response.status_code != 200) {
     // window.location.href='error.html'
