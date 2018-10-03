@@ -10,8 +10,9 @@ body{
       display: block;
       margin-left: auto;
       margin-right: auto;
-      height: 320px;
-      width: 120px;
+      height: auto;
+      width: 100%;
+      max-width: 100%;
     }
   }
 }
@@ -20,7 +21,7 @@ body{
   text-align: center;
   &__name{
     font-size: 24px;
-  } 
+  }
   &__desc{
     font-size: 16px;
     color: rgb(153, 153, 153);
@@ -154,7 +155,7 @@ body{
     > img{
       position: relative;
       top: 30%;
-      left: 50%; 
+      left: 50%;
       transform: translateX(-50%);
     }
   }

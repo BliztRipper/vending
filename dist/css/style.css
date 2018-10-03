@@ -8,8 +8,9 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 320px;
-    width: 120px; }
+    height: auto;
+    width: 100%;
+    max-width: 100%; }
 
 .details {
   text-align: center; }
