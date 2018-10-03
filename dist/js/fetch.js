@@ -9,7 +9,7 @@ const payment_code = url.searchParams.get("payment_code");
 (async function getData() {
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())
   if (response.status_code != 0) {
-    window.location.href='error.html'
+    // window.location.href='error.html'
   } else{
     console.log(response);
     console.log(txid);
@@ -49,7 +49,7 @@ async function returnPayment() {
   }).then(r => r.json()).then( json => json)
     console.log(paymentData);
     if (paymentData.status_code !== 0) {
-      window.location.href = 'error.html'
+      // window.location.href = 'error.html'
     } else {
       let loading = document.getElementById("load");
       loading.classList.add("show")
