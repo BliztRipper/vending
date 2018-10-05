@@ -1,9 +1,4 @@
 
-/*Dev Code*/
-// const txid = 'df7b2ca28514482ab7af3bf829759302';
-// const tmnid = 'tmn.10000000001';
-// const mobileNo = '0891916415';
-
 /*Production Code*/
 const url_tmn = 'https://api-cinema.truemoney.net'
 const url_vending = 'https://v.truemoney.net'
@@ -15,7 +10,7 @@ const mobileNo = url.searchParams.get("mobileno");
 var SKUData = '';
 
 (async function getData() {
-  let tokenCheck = await fetch(`${url_tmn}/HasToken/${txid}`, {
+  let tokenCheck = await fetch(`${url_tmn}/HasToken/${txid}/${tmnid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -27,8 +22,8 @@ var SKUData = '';
     sessionStorage.setItem("mobileno",mobileNo);
     window.location.href=`otp.html`
   } else{
-    // console.log('Token is '+ tokenCheck.description)
-    // console.log(tokenCheck.status_code)
+    console.log('Token is '+ tokenCheck.description)
+    console.log(tokenCheck.status_code)
   }
 
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())

@@ -59,7 +59,7 @@ async function checkotp(){
 checkotp();
 
 async function checkauth(){
-  const rawResponse = await fetch(`${url_tmn}/AuthVerify/${txid}`, {
+  const rawResponse = await fetch(`${url_tmn}/AuthVerify/${txid}/${tmnid}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
