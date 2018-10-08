@@ -1,5 +1,10 @@
-const url_tmn = 'https://api-cinema.truemoney.net'
-const url_vending = 'https://v.truemoney.net'
+/*Staging Code*/
+// const url_tmn = 'https://api-cinema.truemoney.net'
+// const url_vending = 'https://v.truemoney.net'
+/*Production Code*/
+const url_tmn = 'https://api-vending.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
+
 const url_string = window.location.href;
 const url = new URL(url_string);
 const txid = url.searchParams.get("txid");
@@ -11,9 +16,9 @@ const payment_code = url.searchParams.get("payment_code");
   if (response.status_code != 0) {
     window.location.href='error.html'
   } else{
-    console.log(response);
-    console.log(txid);
-    console.log(response.description);
+    // console.log(response);
+    // console.log(txid);
+    // console.log(response.description);
     var myJSON = JSON.stringify(response);
   }
 
@@ -47,7 +52,7 @@ async function returnPayment() {
     },
     body: JSON.stringify(postData)
   }).then(r => r.json()).then( json => json)
-    console.log(paymentData);
+    // console.log(paymentData);
     if (paymentData.status_code !== 0) {
       window.location.href = 'error.html'
     } else {
