@@ -1,12 +1,11 @@
 
-/*Dev Code*/
-// const txid = 'df7b2ca28514482ab7af3bf829759302';
-// const tmnid = 'tmn.10000000001';
-// const mobileNo = '0891916415';
-
+/*Staging Code*/
+// const url_tmn = 'https://api-cinema.truemoney.net'
+// const url_vending = 'https://v.truemoney.net'
 /*Production Code*/
-const url_tmn = 'https://api-cinema.truemoney.net'
-const url_vending = 'https://v.truemoney.net'
+const url_tmn = 'https://api-vending.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
+
 const url_string = window.location.href;
 const url = new URL(url_string);
 const txid = url.searchParams.get("txid");
@@ -15,7 +14,7 @@ const mobileNo = url.searchParams.get("mobileno");
 var SKUData = '';
 
 (async function getData() {
-  let tokenCheck = await fetch(`${url_tmn}/HasToken/${txid}`, {
+  let tokenCheck = await fetch(`${url_tmn}/HasToken/${txid}/${tmnid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -42,7 +41,7 @@ var SKUData = '';
 
   let saleDesc = SKUData.product_name;
   // let saleCode = SKUData.sale_code;
-  let price = SKUData.amount_satang;
+  let price = (SKUData.amount_satang / 100).toFixed(2);
   let currency = SKUData.currency;
   let productImg = SKUData.image_url;
   let productImgDetail = SKUData.cover_image_url;
@@ -68,7 +67,7 @@ async function returnPayment() {
     },
     body: JSON.stringify(postData)
   }).then(r => r.json()).then( json => json)
-    console.log(paymentData);
+    // console.log(paymentData);
     if (paymentData.status_code !== 0) {
       window.location.href = 'error.html'
     } else {
