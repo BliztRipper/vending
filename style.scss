@@ -62,6 +62,10 @@ body{
     color: #fff;
     text-decoration: none;
   }
+  &.disable{
+    background-color: rgb(153, 153, 153);
+    pointer-events: none;
+  }
 }
 
 .success{
