@@ -53,6 +53,9 @@ body {
   .purchase-btn--text {
     color: #fff;
     text-decoration: none; }
+  .purchase-btn.disable {
+    background-color: #999999;
+    pointer-events: none; }
 
 .success {
   padding-top: 50vh;

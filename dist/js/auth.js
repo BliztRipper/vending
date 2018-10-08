@@ -1,10 +1,10 @@
 
 /*Staging Code*/
-// const url_tmn = 'https://api-cinema.truemoney.net'
-// const url_vending = 'https://v.truemoney.net'
+const url_tmn = 'https://api-cinema.truemoney.net'
+const url_vending = 'https://v.truemoney.net'
 /*Production Code*/
-const url_tmn = 'https://api-vending.truemoney.net'
-const url_vending = 'https://api-vending.truemoney.net'
+// const url_tmn = 'https://api-vending.truemoney.net'
+// const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);
@@ -59,6 +59,8 @@ var SKUData = '';
 })();
 
 async function returnPayment() {
+  let purchaseBtn = document.getElementById("purchase-btn")
+  purchaseBtn.classList.add("disable")
   postData = {'third_party_tx_id': txid, 'amount_satang': SKUData.amount_satang.toString(), 'currency': SKUData.currency, 'return_url': `${url_vending}/Notification`, 'payload': SKUData.payload}
   let paymentData = await fetch(`${url_tmn}/Payment/${tmnid}/${mobileNo}`, {
     method: 'POST',
@@ -69,9 +71,10 @@ async function returnPayment() {
   }).then(r => r.json()).then( json => json)
     // console.log(paymentData);
     if (paymentData.status_code !== 0) {
+      purchaseBtn.classList.remove("disable")
       window.location.href = 'error.html'
     } else {
-      let loading = document.getElementById("load");
+      let loading = document.getElementById("load")
       loading.classList.add("show")
       window.location.href = 'success.html'
     }
