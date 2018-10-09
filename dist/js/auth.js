@@ -1,10 +1,10 @@
 
 /*Staging Code*/
-const url_tmn = 'https://api-cinema.truemoney.net'
-const url_vending = 'https://v.truemoney.net'
+// const url_tmn = 'https://api-cinema.truemoney.net'
+// const url_vending = 'https://v.truemoney.net'
 /*Production Code*/
-// const url_tmn = 'https://api-vending.truemoney.net'
-// const url_vending = 'https://api-vending.truemoney.net'
+const url_tmn = 'https://api-vending.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);

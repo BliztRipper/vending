@@ -1,10 +1,10 @@
 
 /*Staging Code*/
-const url_tmn = 'https://api-cinema.truemoney.net'
-const url_vending = 'https://v.truemoney.net'
+// const url_tmn = 'https://api-cinema.truemoney.net'
+// const url_vending = 'https://v.truemoney.net'
 /*Production Code*/
-// const url_tmn = 'https://api-vending.truemoney.net'
-// const url_vending = 'https://api-vending.truemoney.net'
+const url_tmn = 'https://api-vending.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
 
 const txid = sessionStorage.getItem("txid");
 const tmnid = sessionStorage.getItem("tmnid");
@@ -72,7 +72,7 @@ async function checkauth(){
     body: JSON.stringify(auth_no)
   });
   const auth_data = await rawResponse.json();
-  // console.log(auth_data);
+  console.log(auth_data);
   if(status != 0) {
     window.location.href='authError.html'
   } else {
