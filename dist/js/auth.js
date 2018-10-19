@@ -20,7 +20,7 @@ var SKUData = '';
       'Content-Type': 'application/json'
     },
   }).then(r => r.json())
-  if(tokenCheck.status_code  !== 0){
+  if(tokenCheck.status_code  == 30103){
     sessionStorage.setItem("txid",txid);
     sessionStorage.setItem("tmnid",tmnid);
     sessionStorage.setItem("mobileno",mobileNo);
