@@ -1,10 +1,10 @@
 
 /*Staging Code*/
-// const url_tmn = 'https://api-cinema.truemoney.net'
-// const url_vending = 'https://v.truemoney.net'
+const url_tmn = 'https://api-cinema.truemoney.net'
+const url_vending = 'https://v.truemoney.net'
 /*Production Code*/
-const url_tmn = 'https://api-vending.truemoney.net'
-const url_vending = 'https://api-vending.truemoney.net'
+// const url_tmn = 'https://api-vending.truemoney.net'
+// const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);
@@ -32,6 +32,7 @@ var SKUData = '';
 
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())
   if (response.status_code != 0) {
+    console.log('${url_vending}/GetSKU/${txid}', response.status_code)
     window.location.href='error.html'
   } else{
     let myJSON = JSON.stringify(response);
