@@ -20,7 +20,7 @@ var SKUData = '';
       'Content-Type': 'application/json'
     },
   }).then(r => r.json())
-  if(tokenCheck.status_code  == 30103){
+  if(tokenCheck.status_code == 30103){
     sessionStorage.setItem("txid",txid);
     sessionStorage.setItem("tmnid",tmnid);
     sessionStorage.setItem("mobileno",mobileNo);
@@ -52,7 +52,6 @@ var SKUData = '';
   let append_price = document.getElementById("price").innerHTML += price;
   let append_productImg = document.getElementById("image").src = productImg;
 
-
   if (currency === 'THB') {
     document.getElementById("currency").innerHTML += '฿';
   }
@@ -62,7 +61,7 @@ var SKUData = '';
 async function returnPayment() {
   let purchaseBtn = document.getElementById("purchase-btn")
   purchaseBtn.classList.add("disable")
-  postData = {'third_party_tx_id': txid, 'amount_satang': SKUData.amount_satang.toString(), 'currency': SKUData.currency, 'return_url': `${url_vending}/Notification`, 'payload': SKUData.payload}
+  postData = {'third_party_tx_id': txid, 'amount_satang': SKUData.amount_satang.toString(), 'currency': SKUData.currency, 'description': SKUData.product_name, 'return_url': `${url_vending}/Notification`, 'payload': SKUData.payload}
   let paymentData = await fetch(`${url_tmn}/Payment/${tmnid}/${mobileNo}`, {
     method: 'POST',
     headers: {
