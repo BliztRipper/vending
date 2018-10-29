@@ -33,7 +33,7 @@ var SKUData = '';
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())
   if (response.status_code != 0) {
     console.log('${url_vending}/GetSKU/${txid}', response.status_code)
-    // window.location.href='error.html'
+    window.location.href='error.html'
   } else{
     let myJSON = JSON.stringify(response);
   }
@@ -73,7 +73,7 @@ async function returnPayment() {
     // console.log(paymentData);
     if (paymentData.status_code !== 0) {
       purchaseBtn.classList.remove("disable")
-      // window.location.href = 'error.html'
+      window.location.href = 'error.html'
     } else {
       let loading = document.getElementById("load")
       loading.classList.add("show")
