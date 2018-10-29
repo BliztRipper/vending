@@ -33,7 +33,7 @@ var SKUData = '';
   let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r => r.json())
   if (response.status_code != 0) {
     console.log('${url_vending}/GetSKU/${txid}', response.status_code)
-    window.location.href='error.html'
+    // window.location.href='error.html'
   } else{
     let myJSON = JSON.stringify(response);
   }
@@ -60,6 +60,7 @@ var SKUData = '';
 
 async function returnPayment() {
   let purchaseBtn = document.getElementById("purchase-btn")
+  purchaseBtn.disabled = true;
   purchaseBtn.classList.add("disable")
   postData = {'third_party_tx_id': txid, 'amount_satang': SKUData.amount_satang.toString(), 'currency': SKUData.currency, 'description': SKUData.product_name, 'return_url': `${url_vending}/Notification`, 'payload': SKUData.payload}
   let paymentData = await fetch(`${url_tmn}/Payment/${tmnid}/${mobileNo}`, {
@@ -72,15 +73,15 @@ async function returnPayment() {
     // console.log(paymentData);
     if (paymentData.status_code !== 0) {
       purchaseBtn.classList.remove("disable")
-      window.location.href = 'error.html'
+      // window.location.href = 'error.html'
     } else {
       let loading = document.getElementById("load")
       loading.classList.add("show")
       window.location.href = 'success.html'
     }
-  }
+}
 
   history.pushState(null, null, location.href);
   window.onpopstate = function () {
       history.go(1);
-  };
+  }

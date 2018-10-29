@@ -38,6 +38,9 @@ body {
       top: 20px;
       left: -10%; }
 
+button {
+  font-size: 1rem; }
+
 .purchase-btn {
   position: absolute;
   bottom: 16px;
