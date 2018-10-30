@@ -33,7 +33,7 @@ var SKUData = "";
     r.json()
   );
   if (response.status_code != 0) {
-    console.log("${url_vending}/GetSKU/${txid}", response.status_code);
+    console.log(`${url_vending}/GetSKU/${txid}`, response.status_code);
     window.location.href = "error.html";
   } else {
     let myJSON = JSON.stringify(response);
