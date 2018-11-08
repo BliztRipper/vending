@@ -9,10 +9,10 @@
   </head>
   <body>
     <h1 class="auth__title">กรอกข้อมูลยืนยัน เพื่อซื้อสินค้า</h1>
-    <form class="otp" id="auth_otp"> 
+    <form class="otp" id="auth_otp">
       <input class="otp--input" id="auth-form" type="tel" name="phonenumber" maxlength="6" pattern=".{6}" required="required"/>
       <div class="auth__ref" id="otp_ref"></div><a class="auth__resend" href="">ขอรหัสยืนยันอีกครั้ง  </a>
-      <div class="otp--btn" href="javaScript:void(0);" onclick="checkauth()">ยืนยันOTP</div>
+      <div class="otp--btn" onclick="checkauth()">ยืนยันOTP</div>
     </form>
     <div class="loading" id="load"><img src="images/Spinner-1s-200px.gif" alt=""/></div>
     <script src="js/otp.js"></script>

@@ -20,20 +20,16 @@ var auth = '';
 var status = '';
 var otp_ref = '';
 var auth_code = '';
+var auth_no = "";
 var otp_form = document.getElementById('otp');
 var auth_form = document.getElementById('auth_otp');
 var otpInput = document.getElementById('otp-form');
 var authInput = document.getElementById('auth-form');
 
 authInput.addEventListener('keyup', function (e) {
-  var auth = authInput.value
-  auth_no = {'otp_ref': otp_ref,"otp_code" : auth, "agreement_id": "online_merchant", "auth_code": auth_code, "tmn_account" : mobileNo};
-  // console.log(auth_no)
   if(authInput.value.length != 6){
 
   } else {
-      let loading = document.getElementById("load");
-      loading.classList.add("show")
       checkauth();
   }
 });
@@ -64,6 +60,11 @@ async function checkotp(){
 checkotp();
 
 async function checkauth(){
+  auth = authInput.value
+  auth_no = {'otp_ref': otp_ref,"otp_code" : auth, "agreement_id": "online_merchant", "auth_code": auth_code, "tmn_account" : mobileNo};
+
+  let loading = document.getElementById("load");
+  loading.classList.add("show")
   const rawResponse = await fetch(`${url_tmn}/AuthVerify/${txid}/${tmnid}`, {
     method: 'POST',
     headers: {
@@ -71,8 +72,9 @@ async function checkauth(){
     },
     body: JSON.stringify(auth_no)
   });
+
   const auth_data = await rawResponse.json();
-  console.log(auth_data);
+  status = auth_data.status_code
   if(status != 0) {
     window.location.href='authError.html'
   } else {
