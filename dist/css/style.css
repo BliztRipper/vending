@@ -135,16 +135,23 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(187, 187, 187, 0.54);
   display: none; }
   .loading.show {
     display: block; }
     .loading.show > img {
       position: relative;
-      top: 30%;
+      padding-top: 10vh;
       left: 50%;
       -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
       transform: translateX(-50%); }
+  .loading__title {
+    text-align: center;
+    font-size: 24px; }
+  .loading__desc {
+    text-align: center;
+    font-size: 16px;
+    color: #999999;
+    padding: 0 4rem; }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,6 +1,6 @@
 /*Staging Code*/
-const url_tmn = "https://api-cinema.truemoney.net";
-const url_vending = "https://v.truemoney.net";
+const url_tmn = "https://api-vending-payment-stg.truemoney.net";
+const url_vending = "https://api-vending-stg.truemoney.net";
 /*Production Code*/
 // const url_tmn = 'https://api-vending.truemoney.net'
 // const url_vending = 'https://api-vending.truemoney.net'
@@ -34,7 +34,7 @@ var SKUData = "";
   );
   if (response.status_code != 0) {
     console.log(`${url_vending}/GetSKU/${txid}`, response.status_code);
-    window.location.href = "error.html";
+    // window.location.href = "error.html";
   } else {
     let myJSON = JSON.stringify(response);
   }
@@ -48,9 +48,7 @@ var SKUData = "";
   let productImg = SKUData.image_url;
   let productImgDetail = SKUData.cover_image_url;
 
-  let append_sale_description = (document.getElementById(
-    "saleDesc"
-  ).innerHTML += saleDesc);
+  let append_sale_description = (document.getElementById("saleDesc").innerHTML += saleDesc);
   // let append_sale_code = document.getElementById("saleCode").innerHTML += 'Product Code : ' + saleCode;
   let append_price = (document.getElementById("price").innerHTML += price);
   let append_productImg = (document.getElementById("image").src = productImg);
@@ -58,14 +56,27 @@ var SKUData = "";
   if (currency === "THB") {
     document.getElementById("currency").innerHTML += "฿";
   }
-})();
+})()
 
 async function returnPayment() {
   let purchaseBtn = document.getElementById("purchase-btn")
-  let loading = document.getElementById("load")
+  var loading = document.getElementById("load")
   purchaseBtn.disabled = true;
   purchaseBtn.classList.add("disable");
   loading.classList.add("show");
+
+  var timesRun = 0
+  var interval = setInterval(function(){
+      timesRun += 1
+      if(timesRun === 4){
+          clearInterval(interval);
+          window.location.href = "error.html"
+      } else {
+
+      }
+  }, 5000)
+
+
   postData = {
     third_party_tx_id: txid,
     amount_satang: SKUData.amount_satang.toString(),
@@ -73,7 +84,8 @@ async function returnPayment() {
     description: SKUData.product_name,
     return_url: `${url_vending}/Notification`,
     payload: SKUData.payload
-  };
+  }
+
   let paymentData = await fetch(`${url_tmn}/Payment/${tmnid}/${mobileNo}`, {
     method: "POST",
     headers: {
@@ -82,8 +94,8 @@ async function returnPayment() {
     body: JSON.stringify(postData)
   })
     .then(r => r.json())
-    .then(json => json);
-  // console.log(paymentData);
+    .then(json => json)
+
   if (paymentData.status_code !== 0) {
     purchaseBtn.classList.remove("disable");
     window.location.href = "error.html";
