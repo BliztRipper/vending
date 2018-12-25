@@ -3,10 +3,10 @@ block page
   -var index = 'otp'
 block body
   h1.auth__title กรอกข้อมูลยืนยัน เพื่อซื้อสินค้า
-  form.otp#auth_otp 
-    input.otp--input#auth-form(type='tel' name="phonenumber" maxlength="6" pattern=".{6}" required)
+  form.otp#auth_otp
+    input.otp--input#auth-form(type='tel' name="phonenumber" maxlength="6" pattern=".{6}" onpaste="checkauth()" required)
     .auth__ref#otp_ref
-    a(href='').auth__resend ขอรหัสยืนยันอีกครั้ง  
+    a(href='').auth__resend ขอรหัสยืนยันอีกครั้ง
     .otp--btn(href='javaScript:void(0);' onclick="checkauth()") ยืนยันOTP
   .loading#load
-    img(src="images/Spinner-1s-200px.gif", alt="")  
+    img(src="images/Spinner-1s-200px.gif", alt="")

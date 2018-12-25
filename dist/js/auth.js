@@ -34,7 +34,7 @@ var SKUData = "";
   );
   if (response.status_code != 0) {
     console.log(`${url_vending}/GetSKU/${txid}`, response.status_code);
-    // window.location.href = "error.html";
+    window.location.href = "error.html";
   } else {
     let myJSON = JSON.stringify(response);
   }
@@ -97,14 +97,14 @@ async function returnPayment() {
     .then(json => json)
 
   if (paymentData.status_code !== 0) {
-    purchaseBtn.classList.remove("disable");
-    window.location.href = "error.html";
+    purchaseBtn.classList.remove("disable")
+    window.location.href = "error.html"
   } else {
-    window.location.href = "success.html";
+    window.location.href = "success.html"
   }
 }
 
-history.pushState(null, null, location.href);
+history.pushState(null, null, location.href)
 window.onpopstate = function() {
   history.go(1);
 };
