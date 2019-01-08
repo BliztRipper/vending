@@ -1,0 +1,13 @@
+extends _template
+block page
+  -var index = 'error'
+block body
+  img.success__img(src="images/errorCase2.png", alt="")
+  section.success
+    .success__name ขออภัย จำนวนเงินของคุณไม่เพียงพอ
+    .success__desc กรุณาเติมเงินแล้วเลือกสินค้าใหม่อีกครั้ง
+  script.
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };

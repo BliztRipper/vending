@@ -64,6 +64,7 @@ button{
   &--text{
     color: #fff;
     text-decoration: none;
+    border: none;
   }
   &.disable{
     background-color: rgb(153, 153, 153);
@@ -153,10 +154,11 @@ button{
   left: 0;
   right: 0;
   bottom: 0;
-  // background-color: rgba(187, 187, 187, 0.54);
   display: none;
   &.show{
     display: block;
+    background-color: #fff;
+    z-index: 50;
     > img{
       position: relative;
       padding-top: 10vh;

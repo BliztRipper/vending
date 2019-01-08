@@ -55,7 +55,8 @@ button {
   color: #fff; }
   .purchase-btn--text {
     color: #fff;
-    text-decoration: none; }
+    text-decoration: none;
+    border: none; }
   .purchase-btn.disable {
     background-color: #999999;
     pointer-events: none; }
@@ -137,7 +138,9 @@ button {
   bottom: 0;
   display: none; }
   .loading.show {
-    display: block; }
+    display: block;
+    background-color: #fff;
+    z-index: 50; }
     .loading.show > img {
       position: relative;
       padding-top: 10vh;

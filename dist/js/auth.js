@@ -13,27 +13,25 @@ const mobileNo = url.searchParams.get("mobileno");
 var SKUData = "";
 
 (async function getData() {
-  let tokenCheck = await fetch(`${url_tmn}/HasToken/${txid}/${tmnid}`, {
+  let tokenCheck = await fetch(`${url_tmn}/v4/HasToken/${txid}/${tmnid}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
     }
   }).then(r => r.json());
-  if (tokenCheck.status_code == 30103) {
-    sessionStorage.setItem("txid", txid);
-    sessionStorage.setItem("tmnid", tmnid);
-    sessionStorage.setItem("mobileno", mobileNo);
-    window.location.href = `otp.html`;
+  if (tokenCheck.status_code === 30103) {
+    sessionStorage.setItem("txid", txid)
+    sessionStorage.setItem("tmnid", tmnid)
+    sessionStorage.setItem("mobileno", mobileNo)
+    window.location.href = `otp.html`
   } else {
     // console.log('Token is '+ tokenCheck.description)
     // console.log(tokenCheck.status_code)
   }
 
-  let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r =>
-    r.json()
-  );
+  let response = await fetch(`${url_vending}/v4/GetSKU/${txid}`).then(r =>r.json())
   if (response.status_code != 0) {
-    console.log(`${url_vending}/GetSKU/${txid}`, response.status_code);
+    console.log(`${url_vending}/v4/GetSKU/${txid}`, response.status_code);
     window.location.href = "error.html";
   } else {
     let myJSON = JSON.stringify(response);
@@ -59,24 +57,6 @@ var SKUData = "";
 })()
 
 async function returnPayment() {
-  let purchaseBtn = document.getElementById("purchase-btn")
-  var loading = document.getElementById("load")
-  purchaseBtn.disabled = true;
-  purchaseBtn.classList.add("disable");
-  loading.classList.add("show");
-
-  var timesRun = 0
-  var interval = setInterval(function(){
-      timesRun += 1
-      if(timesRun === 4){
-          clearInterval(interval);
-          window.location.href = "error.html"
-      } else {
-
-      }
-  }, 5000)
-
-
   postData = {
     third_party_tx_id: txid,
     amount_satang: SKUData.amount_satang.toString(),
@@ -86,21 +66,52 @@ async function returnPayment() {
     payload: SKUData.payload
   }
 
-  let paymentData = await fetch(`${url_tmn}/Payment/${tmnid}/${mobileNo}`, {
+  let paymentData = await fetch(`${url_tmn}/v4/Payment/${tmnid}/${mobileNo}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: {"Content-Type": "application/json"},
     body: JSON.stringify(postData)
   })
     .then(r => r.json())
     .then(json => json)
 
-  if (paymentData.status_code !== 0) {
+  let purchaseBtn = document.getElementById("purchase-btn")
+  let str = paymentData.description.split(':')
+  var loading = document.getElementById("load")
+  purchaseBtn.disabled = true;
+  purchaseBtn.classList.add("disable");
+  loading.classList.add("show");
+
+  if (paymentData.status_code = 0) {
     purchaseBtn.classList.remove("disable")
-    window.location.href = "error.html"
-  } else {
     window.location.href = "success.html"
+  } else if(paymentData.status_code = 10103 && paymentData.description === 'Pending' ) {
+      let timesRun = 0
+      let interval = setInterval(function(){
+        let paymentStatus = fetch(`${url_tmn}/v4/QueryTx/${txid}`, {
+          method: "GET",
+          headers: {"Content-Type": "application/json"}})
+          .then(r => r.json()).then(json => json.data)
+          .then(data => data.map(status=>{
+            return status.payment_status
+          }))
+        timesRun += 1
+        if(timesRun === 4){
+          clearInterval(interval)
+          window.location.href = "error.html"
+        }else if(paymentStatus === "Payment Success"){
+          clearInterval(interval)
+          window.location.href = "success.html"
+        } else {
+
+        }
+      }, 5000)
+
+  }
+  else if(paymentData.status_code = 35000 && str[0] === 'insufficient_fund ' ) {
+    window.location.href = "nobalance.html"
+  }
+  else {
+    window.location.href = "error.html"
   }
 }
 
