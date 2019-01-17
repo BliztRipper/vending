@@ -12,22 +12,6 @@ const token = url.searchParams.get("token");
 var SKUData = "";
 
 (async function getData() {
-  // let tokenCheck = await fetch(`${url_tmn}/v4/HasToken/${txid}/${tmnid}`, {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   }
-  // }).then(r => r.json());
-  // if (tokenCheck.status_code === 30103) {
-  //   sessionStorage.setItem("txid", txid)
-  //   sessionStorage.setItem("tmnid", tmnid)
-  //   sessionStorage.setItem("mobileno", mobileNo)
-  //   window.location.href = `otp.html`
-  // } else {
-  //   console.log('Token is '+ tokenCheck.description)
-  //   console.log(tokenCheck.status_code)
-  // }
-
   let response = await fetch(`${url_vending}/v4/GetSKU/${txid}`).then(r =>r.json())
   if (response.status_code != 0) {
     window.location.href = "error.html";
@@ -62,6 +46,12 @@ async function returnPayment() {
     payload: SKUData.payload
   }
 
+  let purchaseBtn = document.getElementById("purchase-btn")
+  var loading = document.getElementById("load")
+  purchaseBtn.disabled = true;
+  purchaseBtn.classList.add("disable");
+  loading.classList.add("show");
+
   let paymentData = await fetch(`${url_tmn}/v4/Payment`, {
     method: "POST",
     headers: {"Content-Type": "application/json","token": `${token}` },
@@ -70,13 +60,7 @@ async function returnPayment() {
     .then(r => r.json())
     .then(json => json)
 
-  let purchaseBtn = document.getElementById("purchase-btn")
   let str = paymentData.description.split(':')
-  var loading = document.getElementById("load")
-  purchaseBtn.disabled = true;
-  purchaseBtn.classList.add("disable");
-  loading.classList.add("show");
-
   if (paymentData.status_code = 0) {
     purchaseBtn.classList.remove("disable")
     window.location.href = "success.html"
