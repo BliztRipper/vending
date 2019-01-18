@@ -1,40 +1,20 @@
 /*Staging Code*/
-const url_tmn = "https://api-vending-payment-stg.truemoney.net";
-const url_vending = "https://api-vending-stg.truemoney.net";
+// const url_tmn = "https://api-vending-payment-stg.truemoney.net";
+// const url_vending = "https://api-vending-stg.truemoney.net";
 /*Production Code*/
-// const url_tmn = 'https://api-vending.truemoney.net'
-// const url_vending = 'https://api-vending.truemoney.net'
+const url_tmn = 'https://api-vending-payment.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);
 const txid = url.searchParams.get("txid");
-const tmnid = url.searchParams.get("tmnid");
-const mobileNo = url.searchParams.get("mobileno");
+const token = url.searchParams.get("token");
 var SKUData = "";
 
 (async function getData() {
-  let tokenCheck = await fetch(`${url_tmn}/v4/HasToken/${txid}/${tmnid}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(r => r.json());
-  if (tokenCheck.status_code === 30103) {
-    sessionStorage.setItem("txid", txid)
-    sessionStorage.setItem("tmnid", tmnid)
-    sessionStorage.setItem("mobileno", mobileNo)
-    window.location.href = `otp.html`
-  } else {
-    // console.log('Token is '+ tokenCheck.description)
-    // console.log(tokenCheck.status_code)
-  }
-
   let response = await fetch(`${url_vending}/v4/GetSKU/${txid}`).then(r =>r.json())
   if (response.status_code != 0) {
-    console.log(`${url_vending}/v4/GetSKU/${txid}`, response.status_code);
     window.location.href = "error.html";
-  } else {
-    let myJSON = JSON.stringify(response);
   }
 
   SKUData = response.data;
@@ -66,21 +46,21 @@ async function returnPayment() {
     payload: SKUData.payload
   }
 
-  let paymentData = await fetch(`${url_tmn}/v4/Payment/${tmnid}/${mobileNo}`, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(postData)
-  })
-    .then(r => r.json())
-    .then(json => json)
-
   let purchaseBtn = document.getElementById("purchase-btn")
-  let str = paymentData.description.split(':')
   var loading = document.getElementById("load")
   purchaseBtn.disabled = true;
   purchaseBtn.classList.add("disable");
   loading.classList.add("show");
 
+  let paymentData = await fetch(`${url_tmn}/v4/Payment`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json","token": `${token}` },
+    body: JSON.stringify(postData)
+  })
+    .then(r => r.json())
+    .then(json => json)
+
+  let str = paymentData.description.split(':')
   if (paymentData.status_code = 0) {
     purchaseBtn.classList.remove("disable")
     window.location.href = "success.html"
