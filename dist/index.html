@@ -6,6 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Vending</title>
     <link rel="stylesheet" href="css/style.css"/>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-41231050-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag(){dataLayer.push(arguments)}
+      gtag('js', new Date())
+      gtag('config', 'UA-41231050-3',{
+        'page_title' : 'vending_productview',
+        'page_path': '/index.html',
+      })
+    </script>
   </head>
   <body>
     <section class="product">
@@ -23,7 +33,10 @@
         <div class="purchase-btn--text">ซื้อ</div>
       </button>
     </section>
-    <div class="loading" id="load"><img src="images/Spinner-1s-200px.gif" alt=""/></div>
+    <div class="loading" id="load"><img src="images/Vending-Pending.gif" alt=""/>
+      <h4 class="loading__title">เรากำลังเตรียมสินค้าให้คุณ</h4>
+      <p class="loading__desc">คุณจะได้รับสินค้าภายใน 1 นาที หากเกินเวลาที่กำหนด กรุณาติดต่อ<br/>ศูนย์บริการลูกค้า ทรูมันนี่ 1240</p>
+    </div>
     <script src="js/auth.js"></script>
   </body>
 </html>

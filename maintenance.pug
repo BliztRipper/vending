@@ -1,0 +1,13 @@
+extends _template
+block page
+  -var index = 'error'
+block body
+  img.success__img(src="images/placeholderProduct.png", alt="")
+  section.success
+    .success__name ขออภัย ระบบกำลังปรับปรุง
+    .success__desc กรุณารอสักครู่ แล้วเข้าใช้งานอีกครั้ง
+  script.
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };

@@ -6,13 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Vending</title>
     <link rel="stylesheet" href="css/style.css"/>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-41231050-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date())
+      gtag('config', 'UA-41231050-3')
+    </script>
   </head>
   <body>
     <h1 class="auth__title">กรอกข้อมูลยืนยัน เพื่อซื้อสินค้า</h1>
     <form class="otp" id="auth_otp">
-      <input class="otp--input" id="auth-form" type="tel" name="phonenumber" maxlength="6" pattern=".{6}" required="required"/>
-      <div class="auth__ref" id="otp_ref"></div><a class="auth__resend" href="">ขอรหัสยืนยันอีกครั้ง  </a>
-      <div class="otp--btn" onclick="checkauth()">ยืนยันOTP</div>
+      <input class="otp--input" id="auth-form" type="tel" name="phonenumber" maxlength="6" pattern=".{6}" onpaste="checkauth()" required="required"/>
+      <div class="auth__ref" id="otp_ref"></div><a class="auth__resend" href="">ขอรหัสยืนยันอีกครั้ง</a>
+      <div class="otp--btn" href="javaScript:void(0);" onclick="checkauth()">ยืนยันOTP</div>
     </form>
     <div class="loading" id="load"><img src="images/Spinner-1s-200px.gif" alt=""/></div>
     <script src="js/otp.js"></script>

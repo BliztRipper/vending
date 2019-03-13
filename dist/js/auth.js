@@ -1,42 +1,20 @@
 /*Staging Code*/
-const url_tmn = "https://api-cinema.truemoney.net";
-const url_vending = "https://v.truemoney.net";
+// const url_tmn = "https://api-vending-payment-stg.truemoney.net";
+// const url_vending = "https://api-vending-stg.truemoney.net";
 /*Production Code*/
-// const url_tmn = 'https://api-vending.truemoney.net'
-// const url_vending = 'https://api-vending.truemoney.net'
+const url_tmn = 'https://api-vending-payment.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);
 const txid = url.searchParams.get("txid");
-const tmnid = url.searchParams.get("tmnid");
-const mobileNo = url.searchParams.get("mobileno");
+const token = url.searchParams.get("token");
 var SKUData = "";
 
 (async function getData() {
-  let tokenCheck = await fetch(`${url_tmn}/HasToken/${txid}/${tmnid}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(r => r.json());
-  if (tokenCheck.status_code == 30103) {
-    sessionStorage.setItem("txid", txid);
-    sessionStorage.setItem("tmnid", tmnid);
-    sessionStorage.setItem("mobileno", mobileNo);
-    window.location.href = `otp.html`;
-  } else {
-    // console.log('Token is '+ tokenCheck.description)
-    // console.log(tokenCheck.status_code)
-  }
-
-  let response = await fetch(`${url_vending}/GetSKU/${txid}`).then(r =>
-    r.json()
-  );
+  let response = await fetch(`${url_vending}/v4/GetSKU/${txid}`).then(r =>r.json())
   if (response.status_code != 0) {
-    console.log(`${url_vending}/GetSKU/${txid}`, response.status_code);
     window.location.href = "error.html";
-  } else {
-    let myJSON = JSON.stringify(response);
   }
 
   SKUData = response.data;
@@ -48,9 +26,7 @@ var SKUData = "";
   let productImg = SKUData.image_url;
   let productImgDetail = SKUData.cover_image_url;
 
-  let append_sale_description = (document.getElementById(
-    "saleDesc"
-  ).innerHTML += saleDesc);
+  let append_sale_description = (document.getElementById("saleDesc").innerHTML += saleDesc);
   // let append_sale_code = document.getElementById("saleCode").innerHTML += 'Product Code : ' + saleCode;
   let append_price = (document.getElementById("price").innerHTML += price);
   let append_productImg = (document.getElementById("image").src = productImg);
@@ -58,41 +34,67 @@ var SKUData = "";
   if (currency === "THB") {
     document.getElementById("currency").innerHTML += "฿";
   }
-})();
+})()
 
 async function returnPayment() {
-  let purchaseBtn = document.getElementById("purchase-btn")
-  let loading = document.getElementById("load")
-  purchaseBtn.disabled = true;
-  purchaseBtn.classList.add("disable");
-  loading.classList.add("show");
   postData = {
     third_party_tx_id: txid,
     amount_satang: SKUData.amount_satang.toString(),
     currency: SKUData.currency,
     description: SKUData.product_name,
-    return_url: `${url_vending}/Notification`,
+    return_url: `${url_vending}/v4/Notification`,
     payload: SKUData.payload
-  };
-  let paymentData = await fetch(`${url_tmn}/Payment/${tmnid}/${mobileNo}`, {
+  }
+
+  let purchaseBtn = document.getElementById("purchase-btn")
+  var loading = document.getElementById("load")
+  purchaseBtn.disabled = true;
+  purchaseBtn.classList.add("disable");
+  loading.classList.add("show");
+
+  let paymentData = await fetch(`${url_tmn}/v4/Payment`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: {"Content-Type": "application/json","token": `${token}` },
     body: JSON.stringify(postData)
-  })
-    .then(r => r.json())
-    .then(json => json);
-  // console.log(paymentData);
-  if (paymentData.status_code !== 0) {
-    purchaseBtn.classList.remove("disable");
-    window.location.href = "error.html";
-  } else {
-    window.location.href = "success.html";
+  }).then(r => r.json())
+
+  let str = paymentData.description.split(':')
+
+  if (paymentData.status_code == 0) {
+    purchaseBtn.classList.remove("disable")
+    window.location.href = "success.html"
+  } else if(paymentData.status_code == 10103 && paymentData.description === 'Pending' ) {
+      let timesRun = 0
+      let interval = setInterval(function(){
+        let paymentStatus = fetch(`${url_tmn}/v4/QueryTx/${txid}`, {
+          method: "GET",
+          headers: {"Content-Type": "application/json"}})
+          .then(r => r.json()).then(json => json.data)
+          .then(data => data.map(status=>{
+            return status.payment_status
+          }))
+        timesRun += 1
+        if(timesRun === 6){
+          clearInterval(interval)
+          window.location.href = "error.html"
+        }else if(paymentStatus === "Payment Success"){
+          clearInterval(interval)
+          window.location.href = "success.html"
+        } else {
+
+        }
+      }, 5000)
+
+  }
+  else if(paymentData.status_code == 35000 && str[0] === 'insufficient_fund ' ) {
+    window.location.href = "nobalance.html"
+  }
+  else {
+    window.location.href = "error.html"
   }
 }
 
-history.pushState(null, null, location.href);
+history.pushState(null, null, location.href)
 window.onpopstate = function() {
   history.go(1);
 };

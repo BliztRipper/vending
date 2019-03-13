@@ -2,12 +2,12 @@ extends _template
 block page
   -var index = 'error'
 block body
-  img.success__img(src="images/error1.png", alt="")  
-  section.success      
+  img.success__img(src="images/error1.png", alt="")
+  section.success
     .success__name ขออภัย ไม่สามารถทำรายการได้
-    .success__desc กรุณาเลือกสินค้าใหม่ และสแกนอีกครั้ง     
+    .success__desc กรุณาเลือกสินค้าใหม่ และสแกนอีกครั้ง
   script.
     history.pushState(null, null, location.href);
     window.onpopstate = function () {
         history.go(1);
-    };     
+    };
