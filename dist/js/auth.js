@@ -42,7 +42,7 @@ async function returnPayment() {
     amount_satang: SKUData.amount_satang.toString(),
     currency: SKUData.currency,
     description: SKUData.product_name,
-    return_url: `${url_vending}/Notification`,
+    return_url: `${url_vending}/v4/Notification`,
     payload: SKUData.payload
   }
 
@@ -56,15 +56,14 @@ async function returnPayment() {
     method: "POST",
     headers: {"Content-Type": "application/json","token": `${token}` },
     body: JSON.stringify(postData)
-  })
-    .then(r => r.json())
-    .then(json => json)
+  }).then(r => r.json())
 
   let str = paymentData.description.split(':')
-  if (paymentData.status_code = 0) {
+
+  if (paymentData.status_code == 0) {
     purchaseBtn.classList.remove("disable")
     window.location.href = "success.html"
-  } else if(paymentData.status_code = 10103 && paymentData.description === 'Pending' ) {
+  } else if(paymentData.status_code == 10103 && paymentData.description === 'Pending' ) {
       let timesRun = 0
       let interval = setInterval(function(){
         let paymentStatus = fetch(`${url_tmn}/v4/QueryTx/${txid}`, {
@@ -75,7 +74,7 @@ async function returnPayment() {
             return status.payment_status
           }))
         timesRun += 1
-        if(timesRun === 4){
+        if(timesRun === 6){
           clearInterval(interval)
           window.location.href = "error.html"
         }else if(paymentStatus === "Payment Success"){
@@ -87,7 +86,7 @@ async function returnPayment() {
       }, 5000)
 
   }
-  else if(paymentData.status_code = 35000 && str[0] === 'insufficient_fund ' ) {
+  else if(paymentData.status_code == 35000 && str[0] === 'insufficient_fund ' ) {
     window.location.href = "nobalance.html"
   }
   else {

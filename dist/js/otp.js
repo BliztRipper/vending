@@ -1,10 +1,10 @@
 
 /*Staging Code*/
-const url_tmn = "https://api-vending-payment-stg.truemoney.net";
-const url_vending = "https://api-vending-stg.truemoney.net";
+// const url_tmn = "https://api-vending-payment-stg.truemoney.net";
+// const url_vending = "https://api-vending-stg.truemoney.net";
 /*Production Code*/
-// const url_tmn = 'https://api-vending.truemoney.net'
-// const url_vending = 'https://api-vending.truemoney.net'
+const url_tmn = 'https://api-vending.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
 
 const txid = sessionStorage.getItem("txid");
 const tmnid = sessionStorage.getItem("tmnid");
