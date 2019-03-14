@@ -1,9 +1,9 @@
 /*Staging Code*/
-// const url_tmn = "https://api-vending-payment-stg.truemoney.net";
-// const url_vending = "https://api-vending-stg.truemoney.net";
+const url_tmn = "https://api-vending-payment-stg.truemoney.net";
+const url_vending = "https://api-vending-stg.truemoney.net";
 /*Production Code*/
-const url_tmn = 'https://api-vending-payment.truemoney.net'
-const url_vending = 'https://api-vending.truemoney.net'
+// const url_tmn = 'https://api-vending-payment.truemoney.net'
+// const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);
@@ -64,33 +64,61 @@ async function returnPayment() {
     purchaseBtn.classList.remove("disable")
     window.location.href = "success.html"
   } else if(paymentData.status_code == 10103 && paymentData.description === 'Pending' ) {
-      let timesRun = 0
-      let interval = setInterval(function(){
-        let paymentStatus = fetch(`${url_tmn}/v4/QueryTx/${txid}`, {
-          method: "GET",
-          headers: {"Content-Type": "application/json"}})
-          .then(r => r.json()).then(json => json.data)
-          .then(data => data.map(status=>{
-            return status.payment_status
-          }))
-        timesRun += 1
-        if(timesRun === 6){
-          clearInterval(interval)
-          window.location.href = "error.html"
-        }else if(paymentStatus === "Payment Success"){
-          clearInterval(interval)
-          window.location.href = "success.html"
-        } else {
-
-        }
-      }, 5000)
-
+    queryTx()
   }
   else if(paymentData.status_code == 35000 && str[0] === 'insufficient_fund ' ) {
     window.location.href = "nobalance.html"
   }
   else {
     window.location.href = "error.html"
+  }
+}
+
+let queryTxCounter = 0
+let queryTxTimer
+let totalEachResponseInSec = 5
+let totalTimeoutInSec = 30
+function queryTx () {
+  let sendDate = (new Date()).getTime()
+  if (queryTxTimer) {
+    clearTimeout(queryTxTimer)
+    queryTxTimer = ''
+  }
+  try {
+    fetch(`${url_tmn}/v4/QueryTx/${txid}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status_code === 0 && queryTxCounter < (totalTimeoutInSec / totalEachResponseInSec)) {
+        let instantPaymentStatusData = data.data
+        console.dir(instantPaymentStatusData)
+        let paymentIsSuccess = false
+        let paymentIsNotSuccess = false
+        instantPaymentStatusData.forEach((paymentItem) => {
+          paymentIsSuccess = paymentItem.payment_status === 'Payment Success' ? true : false
+          paymentIsNotSuccess = paymentItem.payment_status === 'Payment Failed' ? true : false
+          if (paymentIsSuccess) {
+            window.location.href = "success.html"
+          }
+          if (paymentIsNotSuccess) {
+            window.location.href = "error.html"
+          }
+        });
+        if (!paymentIsSuccess && !paymentIsNotSuccess) {
+          let responseDate = (new Date()).getTime()
+          let totalResponseMs =  (totalEachResponseInSec * 1000) - (responseDate - sendDate)
+          totalResponseMs = totalResponseMs > 0 ? totalResponseMs : 0
+          queryTxTimer = setTimeout(() => {
+            queryTxCounter += 1
+            queryTx()
+          }, totalResponseMs);
+        }
+      } else {
+        window.location.href = "error.html"
+      }
+
+    })
+  } catch (error) {
+    console.error(error)
   }
 }
 
