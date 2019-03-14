@@ -1,9 +1,9 @@
 /*Staging Code*/
-const url_tmn = "https://api-vending-payment-stg.truemoney.net";
-const url_vending = "https://api-vending-stg.truemoney.net";
+// const url_tmn = "https://api-vending-payment-stg.truemoney.net";
+// const url_vending = "https://api-vending-stg.truemoney.net";
 /*Production Code*/
-// const url_tmn = 'https://api-vending-payment.truemoney.net'
-// const url_vending = 'https://api-vending.truemoney.net'
+const url_tmn = 'https://api-vending-payment.truemoney.net'
+const url_vending = 'https://api-vending.truemoney.net'
 
 const url_string = window.location.href;
 const url = new URL(url_string);
@@ -66,7 +66,7 @@ async function returnPayment() {
   } else if(paymentData.status_code == 10103 && paymentData.description === 'Pending' ) {
     queryTx()
   }
-  else if(paymentData.status_code == 35000 && str[0] === 'insufficient_fund ' ) {
+  else if(paymentData.status_code == 35000 && str[0].trim() === 'insufficient_fund' ) {
     window.location.href = "nobalance.html"
   }
   else {
